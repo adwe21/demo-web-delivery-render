@@ -12,7 +12,7 @@ def test_deploy_container_builds_frontend_and_runs_uvicorn() -> None:
 
     content = DOCKERFILE.read_text()
 
-    assert "FROM node:18-alpine" in content
+    assert "FROM node:20-alpine" in content
     assert "npm install" in content
     assert "npm run build" in content
     assert "COPY --from=frontend-builder /app/web/dist ./web/dist" in content
