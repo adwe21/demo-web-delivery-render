@@ -23,7 +23,7 @@ jobs:
           node-version: '20'
 
       - name: Install Python deps
-        run: pip install -r requirements.txt pytest
+        run: pip install -r requirements.txt pytest httpx
 
       - name: Install frontend deps
         working-directory: web
