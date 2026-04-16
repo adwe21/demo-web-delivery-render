@@ -1,0 +1,37 @@
+name: deploy-smoke
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.13'
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '18'
+
+      - name: Install Python deps
+        run: pip install -r requirements.txt pytest
+
+      - name: Install frontend deps
+        working-directory: web
+        run: npm install
+
+      - name: Build frontend
+        working-directory: web
+        run: npm run build
+
+      - name: Run deploy smoke tests
+        run: pytest -q tests/web/test_demo_launch_backend.py tests/web/test_demo_launch_frontend_integration.py tests/web/test_demo_launch_deploy.py tests/web/test_deploy_container_contract.py
