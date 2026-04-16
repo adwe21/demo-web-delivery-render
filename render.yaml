@@ -1,0 +1,11 @@
+services:
+  - type: web
+    name: demo-web-delivery
+    runtime: python
+    plan: free
+    rootDir: .
+    buildCommand: |
+      pip install -r requirements.txt
+      cd web && npm install && npm run build
+    startCommand: python -m uvicorn web.backend.deploy_app:app --host 0.0.0.0 --port $PORT
+    autoDeploy: true
