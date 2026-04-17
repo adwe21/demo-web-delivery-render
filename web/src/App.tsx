@@ -96,6 +96,13 @@ const PROOF_POINTS = [
   },
 ] as const;
 
+const STATUS_BADGES = [
+  { label: "Smoke status", value: "pass · root / health / intake" },
+  { label: "Latest deploy", value: "main → Actions → Zeabur" },
+  { label: "Share surface", value: "large card · png · alt text" },
+  { label: "Public URL", value: "demo-web-delivery.zeabur.app" },
+] as const;
+
 const DELIVERY_STEPS = [
   {
     title: "Narrative direction locked",
@@ -223,18 +230,14 @@ export default function App() {
               </a>
             </div>
 
-            <div className="grid gap-4 sm:grid-cols-3">
-              {[
-                "Responsive one-page structure",
-                "Interactive audience messaging switcher",
-                "Working CTA confirmation flow",
-              ].map((item) => (
-                <div key={item} className="border border-border bg-card/65 px-4 py-4 text-sm leading-6 text-foreground/78">
+            <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
+              {STATUS_BADGES.map((item) => (
+                <div key={item.label} className="border border-border bg-card/65 px-4 py-4 text-sm leading-6 text-foreground/78">
                   <div className="mb-2 flex items-center gap-2 font-display uppercase tracking-[0.16em] text-muted-foreground">
                     <Check className="h-4 w-4 text-success" />
-                    Ready
+                    {item.label}
                   </div>
-                  {item}
+                  <div className="font-display text-sm uppercase tracking-[0.12em] text-foreground">{item.value}</div>
                 </div>
               ))}
             </div>
@@ -250,6 +253,28 @@ export default function App() {
             </div>
 
             <div className="space-y-4">
+              <div className="rounded-[20px] border border-border bg-background/65 p-4">
+                <div className="mb-4 flex items-center justify-between">
+                  <div>
+                    <p className="font-display text-xs uppercase tracking-[0.16em] text-muted-foreground">All systems ready for launch review</p>
+                    <p className="mt-2 font-collapse text-2xl uppercase tracking-[0.08em] text-foreground">Proof pack status</p>
+                  </div>
+                  <div className="inline-flex items-center gap-2 border border-success/40 bg-success/10 px-3 py-2 font-display text-xs uppercase tracking-[0.16em] text-success">
+                    <Check className="h-4 w-4" />
+                    launch ready
+                  </div>
+                </div>
+
+                <div className="grid gap-3 sm:grid-cols-2">
+                  {STATUS_BADGES.map((item) => (
+                    <div key={item.label} className="border border-border bg-card/70 px-4 py-4">
+                      <p className="font-display text-[11px] uppercase tracking-[0.18em] text-muted-foreground">{item.label}</p>
+                      <p className="mt-2 font-display text-sm uppercase tracking-[0.12em] text-foreground">{item.value}</p>
+                    </div>
+                  ))}
+                </div>
+              </div>
+
               <div className="border border-border bg-background/65 p-4 font-courier text-sm leading-7 text-foreground/88">
                 <div className="mb-3 flex items-center gap-2 text-xs uppercase tracking-[0.16em] text-muted-foreground">
                   <span className="h-2 w-2 rounded-full bg-destructive" />
@@ -260,16 +285,25 @@ export default function App() {
                 <code className="block overflow-x-auto whitespace-pre-wrap bg-transparent p-0">{INSTALL_COMMAND}</code>
               </div>
 
-              <button
-                type="button"
-                onClick={() => {
-                  void handleCopy();
-                }}
-                className="inline-flex w-full items-center justify-center gap-2 border border-border bg-secondary px-4 py-3 font-display text-sm uppercase tracking-[0.16em] text-foreground transition hover:border-foreground/35"
-              >
-                {copyState === "copied" ? <Check className="h-4 w-4 text-success" /> : <Clipboard className="h-4 w-4" />}
-                {copyState === "copied" ? "Copied" : "Copy launch brief"}
-              </button>
+              <div className="grid gap-3 sm:grid-cols-2">
+                <button
+                  type="button"
+                  onClick={() => {
+                    void handleCopy();
+                  }}
+                  className="inline-flex w-full items-center justify-center gap-2 border border-border bg-secondary px-4 py-3 font-display text-sm uppercase tracking-[0.16em] text-foreground transition hover:border-foreground/35"
+                >
+                  {copyState === "copied" ? <Check className="h-4 w-4 text-success" /> : <Clipboard className="h-4 w-4" />}
+                  {copyState === "copied" ? "Copied" : "COPY PUBLIC URL"}
+                </button>
+                <a
+                  href="#contact"
+                  className="inline-flex w-full items-center justify-center gap-2 border border-foreground bg-foreground px-4 py-3 font-display text-sm uppercase tracking-[0.16em] text-background transition hover:opacity-90"
+                >
+                  RUN LIVE SMOKE
+                  <ArrowRight className="h-4 w-4" />
+                </a>
+              </div>
 
               <div className="border border-border bg-background/40 p-4">
                 <p className="font-display text-xs uppercase tracking-[0.18em] text-muted-foreground">Audience messaging</p>

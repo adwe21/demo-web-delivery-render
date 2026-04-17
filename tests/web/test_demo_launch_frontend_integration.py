@@ -68,6 +68,7 @@ def test_frontend_includes_proof_section_and_productized_copy() -> None:
     app_source = APP_PATH.read_text(encoding="utf-8")
 
     assert 'const PROOF_POINTS = [' in app_source
+    assert 'const STATUS_BADGES = [' in app_source
     assert 'Trusted launch proof' in app_source
     assert 'Launch signals teams can trust before they publish, share, or spend traffic.' in app_source
     assert 'Live API intake' in app_source
@@ -79,6 +80,13 @@ def test_frontend_includes_proof_section_and_productized_copy() -> None:
     assert 'Production-ready launch surface' in app_source
     assert 'Open the proof deck' in app_source
     assert 'Audience messaging' in app_source
+    assert 'Smoke status' in app_source
+    assert 'Latest deploy' in app_source
+    assert 'Share surface' in app_source
+    assert 'Public URL' in app_source
+    assert 'All systems ready for launch review' in app_source
+    assert 'RUN LIVE SMOKE' in app_source
+    assert 'COPY PUBLIC URL' in app_source
 
 
 def test_frontend_has_custom_svg_favicon_asset() -> None:
