@@ -54,9 +54,28 @@ jobs:
           else:
               raise SystemExit("local uvicorn server did not become ready")
           PY
-          if ! python scripts/live_smoke_check.py http://127.0.0.1:8080 2>smoke-error.log; then
-            echo '## smoke failure signal' >> "$GITHUB_STEP_SUMMARY"
-            cat smoke-error.log >> "$GITHUB_STEP_SUMMARY"
+          if ! python scripts/live_smoke_check.py http://127.0.0.1:8080 >smoke-report.json 2>smoke-error.log; then
+            python - <<'PY' >> "$GITHUB_STEP_SUMMARY"
+            import json
+            from pathlib import Path
+
+            payload = json.loads(Path("smoke-error.log").read_text())
+            print("## smoke failure signal")
+            print(f"- failure_class: `{payload.get('failure_class', 'unknown')}`")
+            print(f"- detail: `{payload.get('detail', 'missing detail')}`")
+            PY
             cat smoke-error.log >&2
             exit 1
           fi
+          python - <<'PY' >> "$GITHUB_STEP_SUMMARY"
+          import json
+          from pathlib import Path
+
+          payload = json.loads(Path("smoke-report.json").read_text())
+          print("## smoke success signal")
+          print(f"- root_status: `{payload['root_status']}`")
+          print(f"- health_status: `{payload['health_status']}`")
+          print(f"- submit_status: `{payload['submit_status']}`")
+          print(f"- list_status: `{payload['list_status']}`")
+          print(f"- metadata_checks: `{payload['metadata_checks']}`")
+          PY

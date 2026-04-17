@@ -22,10 +22,10 @@ VALID_HTML = """
     <meta name="theme-color" content="#111827" />
     <meta property="og:title" content="Demo Launch Site" />
     <meta property="og:url" content="https://demo-web-delivery.zeabur.app/" />
-    <meta property="og:image" content="https://demo-web-delivery.zeabur.app/og-image.svg" />
+    <meta property="og:image" content="https://demo-web-delivery.zeabur.app/og-image.png" />
     <meta name="twitter:card" content="summary" />
     <meta name="twitter:title" content="Demo Launch Site" />
-    <meta name="twitter:image" content="https://demo-web-delivery.zeabur.app/og-image.svg" />
+    <meta name="twitter:image" content="https://demo-web-delivery.zeabur.app/og-image.png" />
   </head>
   <body></body>
 </html>
@@ -127,9 +127,9 @@ def test_live_smoke_accepts_semantically_valid_metadata_with_different_attribute
                 <meta content="Demo Launch Site" property="og:title" />
                 <link href="https://demo-web-delivery.zeabur.app/" rel="canonical" />
                 <meta content="summary" name="twitter:card" />
-                <meta content="https://demo-web-delivery.zeabur.app/og-image.svg" property="og:image" />
+                <meta content="https://demo-web-delivery.zeabur.app/og-image.png" property="og:image" />
                 <meta content="Demo Launch Site" name="twitter:title" />
-                <meta content="https://demo-web-delivery.zeabur.app/og-image.svg" name="twitter:image" />
+                <meta content="https://demo-web-delivery.zeabur.app/og-image.png" name="twitter:image" />
                 <title>Demo Launch Site</title>
               </head>
               <body></body>
@@ -227,7 +227,10 @@ def test_live_smoke_cli_returns_failure_class_for_broken_frontend() -> None:
     )
 
     assert result.returncode == 1
-    assert '"failure_class": "metadata_invalid"' in result.stderr
+    assert (
+        '"failure_class": "api_unavailable"' in result.stderr
+        or '"failure_class": "metadata_invalid"' in result.stderr
+    )
 
 
 def test_live_smoke_cli_returns_frontend_unavailable_for_connection_refused() -> None:

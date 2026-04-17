@@ -20,6 +20,9 @@ def test_ci_workflow_runs_backend_and_frontend_validation() -> None:
     assert "node-version: '20'" in content
     assert "npm run build" in content
     assert "python -m uvicorn web.backend.deploy_app:app --host 127.0.0.1 --port 8080" in content
-    assert "python scripts/live_smoke_check.py http://127.0.0.1:8080 2>smoke-error.log" in content
-    assert "cat smoke-error.log >> \"$GITHUB_STEP_SUMMARY\"" in content
+    assert "python scripts/live_smoke_check.py http://127.0.0.1:8080 >smoke-report.json 2>smoke-error.log" in content
+    assert "## smoke success signal" in content
+    assert "## smoke failure signal" in content
+    assert "failure_class" in content
+    assert "metadata_checks" in content
     assert "urllib.request.urlopen(\"http://127.0.0.1:8080/api/health\"" in content
