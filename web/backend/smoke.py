@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 from dataclasses import dataclass
+from html.parser import HTMLParser
 from typing import Any, Callable
 from urllib.error import HTTPError, URLError
 from urllib.request import Request, urlopen
@@ -11,7 +12,7 @@ import json
 SendFn = Callable[[str, str, dict[str, Any] | None], tuple[int, str, dict[str, Any] | list[Any] | None, str | None]]
 
 
-@dataclass(frozen=True)
+@dataclass
 class SmokeCheckError(RuntimeError):
     failure_class: str
     detail: str
@@ -29,6 +30,7 @@ class SmokeReport:
     service: str
     submitted_email: str
     listed_emails: list[str]
+    metadata_checks: dict[str, bool]
 
     def as_dict(self) -> dict[str, Any]:
         return {
@@ -39,7 +41,65 @@ class SmokeReport:
             "service": self.service,
             "submitted_email": self.submitted_email,
             "listed_emails": self.listed_emails,
+            "metadata_checks": self.metadata_checks,
         }
+
+
+class _MetadataHTMLParser(HTMLParser):
+    def __init__(self) -> None:
+        super().__init__()
+        self.in_title = False
+        self.title_parts: list[str] = []
+        self.links: list[dict[str, str]] = []
+        self.metas: list[dict[str, str]] = []
+
+    def handle_starttag(self, tag: str, attrs: list[tuple[str, str | None]]) -> None:
+        normalized = {key.lower(): (value or "") for key, value in attrs}
+        tag = tag.lower()
+        if tag == "title":
+            self.in_title = True
+        elif tag == "link":
+            self.links.append(normalized)
+        elif tag == "meta":
+            self.metas.append(normalized)
+
+    def handle_endtag(self, tag: str) -> None:
+        if tag.lower() == "title":
+            self.in_title = False
+
+    def handle_data(self, data: str) -> None:
+        if self.in_title:
+            self.title_parts.append(data)
+
+    @property
+    def title(self) -> str:
+        return "".join(self.title_parts).strip()
+
+
+def _metadata_checks_from_html(html: str) -> dict[str, bool]:
+    parser = _MetadataHTMLParser()
+    parser.feed(html)
+
+    def has_link(rel: str, href: str) -> bool:
+        return any(
+            rel in {item.strip().lower() for item in link.get("rel", "").split()}
+            and link.get("href", "") == href
+            for link in parser.links
+        )
+
+    def has_meta(attr_name: str, attr_value: str, content: str) -> bool:
+        return any(meta.get(attr_name, "") == attr_value and meta.get("content", "") == content for meta in parser.metas)
+
+    return {
+        "title_ok": parser.title == "Demo Launch Site",
+        "canonical_ok": has_link("canonical", "https://demo-web-delivery.zeabur.app/"),
+        "theme_color_ok": has_meta("name", "theme-color", "#111827"),
+        "og_title_ok": has_meta("property", "og:title", "Demo Launch Site"),
+        "og_url_ok": has_meta("property", "og:url", "https://demo-web-delivery.zeabur.app/"),
+        "og_image_ok": has_meta("property", "og:image", "https://demo-web-delivery.zeabur.app/favicon.svg"),
+        "twitter_card_ok": has_meta("name", "twitter:card", "summary"),
+        "twitter_title_ok": has_meta("name", "twitter:title", "Demo Launch Site"),
+    }
 
 
 def run_smoke_check(send: SendFn) -> dict[str, Any]:
@@ -48,7 +108,7 @@ def run_smoke_check(send: SendFn) -> dict[str, Any]:
         "name": f"Smoke Runner {suffix}",
         "email": f"smoke-{suffix}@example.com",
         "company": "Hermes QA",
-        "use_case": "Automated smoke verification for root page, health endpoint, and contact submission flow.",
+        "use_case": "Automated smoke verification for root page, health endpoint, contact submission flow, and metadata contract.",
         "source": "launch-page",
     }
 
@@ -57,6 +117,11 @@ def run_smoke_check(send: SendFn) -> dict[str, Any]:
         raise SmokeCheckError("frontend_unavailable", f"root check failed: {root_status} {root_text[:200]}")
     if root_content_type is not None and "text/html" not in root_content_type:
         raise SmokeCheckError("frontend_unavailable", f"root content-type mismatch: {root_content_type}")
+
+    metadata_checks = _metadata_checks_from_html(root_text)
+    failed_metadata = [name for name, ok in metadata_checks.items() if not ok]
+    if failed_metadata:
+        raise SmokeCheckError("metadata_invalid", f"metadata checks failed: {', '.join(failed_metadata)}")
 
     health_status, health_text, health_json, _ = send("GET", "/api/health", None)
     if health_status != 200 or not isinstance(health_json, dict):
@@ -79,6 +144,7 @@ def run_smoke_check(send: SendFn) -> dict[str, Any]:
         service=str(health_json.get("service", "")),
         submitted_email=payload["email"],
         listed_emails=listed_emails,
+        metadata_checks=metadata_checks,
     )
     return report.as_dict()
 

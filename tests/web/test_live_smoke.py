@@ -13,6 +13,22 @@ from web.backend.smoke import SmokeCheckError, run_smoke_check
 
 client = TestClient(app)
 REPO_ROOT = Path(__file__).resolve().parents[2]
+VALID_HTML = """
+<!doctype html>
+<html>
+  <head>
+    <title>Demo Launch Site</title>
+    <link rel="canonical" href="https://demo-web-delivery.zeabur.app/" />
+    <meta name="theme-color" content="#111827" />
+    <meta property="og:title" content="Demo Launch Site" />
+    <meta property="og:url" content="https://demo-web-delivery.zeabur.app/" />
+    <meta property="og:image" content="https://demo-web-delivery.zeabur.app/favicon.svg" />
+    <meta name="twitter:card" content="summary" />
+    <meta name="twitter:title" content="Demo Launch Site" />
+  </head>
+  <body></body>
+</html>
+"""
 
 
 def _send(method: str, path: str, payload: dict | None = None) -> tuple[int, str, dict | None, str | None]:
@@ -34,6 +50,16 @@ def test_live_smoke_check_covers_root_health_and_contact_submission() -> None:
     assert report["list_status"] == 200
     assert report["submitted_email"] in report["listed_emails"]
     assert report["service"] == "demo-launch-site-backend"
+    assert report["metadata_checks"] == {
+        "title_ok": True,
+        "canonical_ok": True,
+        "theme_color_ok": True,
+        "og_title_ok": True,
+        "og_url_ok": True,
+        "og_image_ok": True,
+        "twitter_card_ok": True,
+        "twitter_title_ok": True,
+    }
 
 
 def test_live_smoke_reports_frontend_failure_class() -> None:
@@ -54,7 +80,7 @@ def test_live_smoke_reports_frontend_failure_class() -> None:
 def test_live_smoke_reports_api_failure_class() -> None:
     def failing_send(method: str, path: str, payload: dict | None = None) -> tuple[int, str, dict | None, str | None]:
         if path == "/":
-            return 200, "<html></html>", None, "text/html"
+            return 200, VALID_HTML, None, "text/html"
         if path == "/api/health":
             return 500, '{"detail":"db offline"}', {"detail": "db offline"}, "application/json"
         raise AssertionError(f"unexpected path: {path}")
@@ -71,7 +97,7 @@ def test_live_smoke_reports_api_failure_class() -> None:
 def test_live_smoke_reports_submission_failure_class() -> None:
     def failing_send(method: str, path: str, payload: dict | None = None) -> tuple[int, str, dict | None, str | None]:
         if path == "/":
-            return 200, "<html></html>", None, "text/html"
+            return 200, VALID_HTML, None, "text/html"
         if path == "/api/health":
             return 200, '{"service":"demo-launch-site-backend"}', {"service": "demo-launch-site-backend"}, "application/json"
         if path == "/api/contact-intakes":
@@ -83,6 +109,67 @@ def test_live_smoke_reports_submission_failure_class() -> None:
     except SmokeCheckError as exc:
         assert exc.failure_class == "submission_failed"
         assert "write failed" in exc.detail
+    else:
+        raise AssertionError("expected SmokeCheckError")
+
+
+def test_live_smoke_accepts_semantically_valid_metadata_with_different_attribute_order() -> None:
+    def flexible_send(method: str, path: str, payload: dict | None = None) -> tuple[int, str, dict | None, str | None]:
+        if path == "/":
+            html = """
+            <!doctype html>
+            <html>
+              <head>
+                <meta content="#111827" name="theme-color" />
+                <meta content="https://demo-web-delivery.zeabur.app/" property="og:url" />
+                <meta content="Demo Launch Site" property="og:title" />
+                <link href="https://demo-web-delivery.zeabur.app/" rel="canonical" />
+                <meta content="summary" name="twitter:card" />
+                <meta content="https://demo-web-delivery.zeabur.app/favicon.svg" property="og:image" />
+                <meta content="Demo Launch Site" name="twitter:title" />
+                <title>Demo Launch Site</title>
+              </head>
+              <body></body>
+            </html>
+            """
+            return 200, html, None, "text/html"
+        if path == "/api/health":
+            return 200, '{"service":"demo-launch-site-backend"}', {"service": "demo-launch-site-backend"}, "application/json"
+        if path == "/api/contact-intakes" and method == "POST":
+            return 201, '{"message":"ok"}', {"message": "ok"}, "application/json"
+        if path == "/api/contact-intakes" and method == "GET":
+            return 200, '[{"email":"smoke-test@example.com"}]', [{"email": "smoke-test@example.com"}], "application/json"
+        raise AssertionError(f"unexpected {method} path: {path}")
+
+    report = run_smoke_check(flexible_send)
+
+    assert report["metadata_checks"]["canonical_ok"] is True
+    assert report["metadata_checks"]["og_title_ok"] is True
+    assert report["metadata_checks"]["twitter_title_ok"] is True
+
+
+def test_live_smoke_reports_metadata_failure_class() -> None:
+    def failing_send(method: str, path: str, payload: dict | None = None) -> tuple[int, str, dict | None, str | None]:
+        if path == "/":
+            html = """
+            <!doctype html>
+            <html>
+              <head>
+                <title>Wrong Title</title>
+              </head>
+              <body></body>
+            </html>
+            """
+            return 200, html, None, "text/html"
+        if path == "/api/health":
+            return 200, '{"service":"demo-launch-site-backend"}', {"service": "demo-launch-site-backend"}, "application/json"
+        raise AssertionError(f"unexpected path: {path}")
+
+    try:
+        run_smoke_check(failing_send)
+    except SmokeCheckError as exc:
+        assert exc.failure_class == "metadata_invalid"
+        assert "title_ok" in exc.detail
     else:
         raise AssertionError("expected SmokeCheckError")
 
