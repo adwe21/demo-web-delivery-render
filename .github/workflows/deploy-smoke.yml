@@ -54,4 +54,9 @@ jobs:
           else:
               raise SystemExit("local uvicorn server did not become ready")
           PY
-          python scripts/live_smoke_check.py http://127.0.0.1:8080
+          if ! python scripts/live_smoke_check.py http://127.0.0.1:8080 2>smoke-error.log; then
+            echo '## smoke failure signal' >> "$GITHUB_STEP_SUMMARY"
+            cat smoke-error.log >> "$GITHUB_STEP_SUMMARY"
+            cat smoke-error.log >&2
+            exit 1
+          fi

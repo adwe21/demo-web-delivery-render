@@ -13,3 +13,8 @@ Public deploy target for the Demo Launch Site.
   - `/api/health`
   - `POST /api/contact-intakes`
   - `GET /api/contact-intakes`
+- Failure signals are classified as:
+  - `frontend_unavailable`
+  - `api_unavailable`
+  - `submission_failed`
+  - `list_verification_failed`
