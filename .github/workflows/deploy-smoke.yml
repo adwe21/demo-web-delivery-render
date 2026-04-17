@@ -34,7 +34,7 @@ jobs:
         run: npm run build
 
       - name: Run deploy smoke tests
-        run: python -m pytest -q tests/web/test_demo_launch_backend.py tests/web/test_demo_launch_frontend_integration.py tests/web/test_demo_launch_deploy.py tests/web/test_deploy_container_contract.py tests/web/test_live_smoke.py
+        run: python -m pytest -q tests/web/test_demo_launch_backend.py tests/web/test_demo_launch_frontend_integration.py tests/web/test_demo_launch_deploy.py tests/web/test_deploy_container_contract.py tests/web/test_live_smoke.py tests/web/test_smoke_summary_script.py
 
       - name: Run local live smoke check
         run: |
@@ -55,8 +55,8 @@ jobs:
               raise SystemExit("local uvicorn server did not become ready")
           PY
           if ! python scripts/live_smoke_check.py http://127.0.0.1:8080 >smoke-report.json 2>smoke-error.log; then
-            python -c 'import json, pathlib; payload=json.loads(pathlib.Path("smoke-error.log").read_text()); print("## smoke failure signal"); print("- failure_class: `{}`".format(payload.get("failure_class", "unknown"))); print("- detail: `{}`".format(payload.get("detail", "missing detail")))' >> "$GITHUB_STEP_SUMMARY"
+            python scripts/write_smoke_summary.py failure smoke-error.log >> "$GITHUB_STEP_SUMMARY"
             cat smoke-error.log >&2
             exit 1
           fi
-          python -c 'import json, pathlib; payload=json.loads(pathlib.Path("smoke-report.json").read_text()); print("## smoke success signal"); print("- root_status: `{}`".format(payload["root_status"])); print("- health_status: `{}`".format(payload["health_status"])); print("- submit_status: `{}`".format(payload["submit_status"])); print("- list_status: `{}`".format(payload["list_status"])); print("- metadata_checks: `{}`".format(payload["metadata_checks"]))' >> "$GITHUB_STEP_SUMMARY"
+          python scripts/write_smoke_summary.py success smoke-report.json >> "$GITHUB_STEP_SUMMARY"

@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 from pathlib import Path
+import struct
 
 
 ROOT = Path(__file__).resolve().parents[2]
@@ -10,6 +11,17 @@ HTML_PATH = ROOT / "web" / "index.html"
 FAVICON_PATH = ROOT / "web" / "public" / "favicon.svg"
 OG_IMAGE_PATH = ROOT / "web" / "public" / "og-image.svg"
 OG_IMAGE_PNG_PATH = ROOT / "web" / "public" / "og-image.png"
+
+
+def _read_png_size(path: Path) -> tuple[int, int]:
+    with path.open("rb") as fh:
+        signature = fh.read(8)
+        assert signature == b"\x89PNG\r\n\x1a\n"
+        _length = fh.read(4)
+        chunk_type = fh.read(4)
+        assert chunk_type == b"IHDR"
+        width, height = struct.unpack(">II", fh.read(8))
+        return width, height
 
 
 def test_frontend_submit_handler_calls_backend_api() -> None:
@@ -66,5 +78,13 @@ def test_frontend_has_dedicated_og_image_asset() -> None:
     assert '<svg' in og_source
     assert 'viewBox="0 0 1200 630"' in og_source
     assert 'Demo Launch Site' in og_source
-    assert 'Launch a credible product story' in og_source
+    assert 'Proof-ready launch narrative' in og_source
+    assert 'Live intake' in og_source
+    assert 'CI-guarded deploys' in og_source
+    assert 'Share-ready branding' in og_source
+    assert '72h launch sprint' in og_source
+    assert 'Launch credibility, not just a landing page.' in og_source
+    assert 'demo-web-delivery.zeabur.app' in og_source
+
     assert OG_IMAGE_PNG_PATH.stat().st_size > 0
+    assert _read_png_size(OG_IMAGE_PNG_PATH) == (1200, 630)
