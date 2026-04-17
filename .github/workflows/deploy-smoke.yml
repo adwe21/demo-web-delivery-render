@@ -55,27 +55,8 @@ jobs:
               raise SystemExit("local uvicorn server did not become ready")
           PY
           if ! python scripts/live_smoke_check.py http://127.0.0.1:8080 >smoke-report.json 2>smoke-error.log; then
-            python - <<'PY' >> "$GITHUB_STEP_SUMMARY"
-            import json
-            from pathlib import Path
-
-            payload = json.loads(Path("smoke-error.log").read_text())
-            print("## smoke failure signal")
-            print(f"- failure_class: `{payload.get('failure_class', 'unknown')}`")
-            print(f"- detail: `{payload.get('detail', 'missing detail')}`")
-            PY
+            python -c 'import json, pathlib; payload=json.loads(pathlib.Path("smoke-error.log").read_text()); print("## smoke failure signal"); print("- failure_class: `{}`".format(payload.get("failure_class", "unknown"))); print("- detail: `{}`".format(payload.get("detail", "missing detail")))' >> "$GITHUB_STEP_SUMMARY"
             cat smoke-error.log >&2
             exit 1
           fi
-          python - <<'PY' >> "$GITHUB_STEP_SUMMARY"
-          import json
-          from pathlib import Path
-
-          payload = json.loads(Path("smoke-report.json").read_text())
-          print("## smoke success signal")
-          print(f"- root_status: `{payload['root_status']}`")
-          print(f"- health_status: `{payload['health_status']}`")
-          print(f"- submit_status: `{payload['submit_status']}`")
-          print(f"- list_status: `{payload['list_status']}`")
-          print(f"- metadata_checks: `{payload['metadata_checks']}`")
-          PY
+          python -c 'import json, pathlib; payload=json.loads(pathlib.Path("smoke-report.json").read_text()); print("## smoke success signal"); print("- root_status: `{}`".format(payload["root_status"])); print("- health_status: `{}`".format(payload["health_status"])); print("- submit_status: `{}`".format(payload["submit_status"])); print("- list_status: `{}`".format(payload["list_status"])); print("- metadata_checks: `{}`".format(payload["metadata_checks"]))' >> "$GITHUB_STEP_SUMMARY"
