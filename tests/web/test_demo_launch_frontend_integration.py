@@ -35,6 +35,14 @@ def test_frontend_branding_uses_shared_site_name_and_page_metadata() -> None:
     assert '<title>Demo Launch Site</title>' in html_source
     assert 'name="description"' in html_source
     assert 'href="/favicon.svg"' in html_source
+    assert 'rel="canonical" href="https://demo-web-delivery.zeabur.app/"' in html_source
+    assert 'name="theme-color" content="#111827"' in html_source
+    assert 'property="og:title" content="Demo Launch Site"' in html_source
+    assert 'property="og:type" content="website"' in html_source
+    assert 'property="og:url" content="https://demo-web-delivery.zeabur.app/"' in html_source
+    assert 'property="og:image" content="https://demo-web-delivery.zeabur.app/favicon.svg"' in html_source
+    assert 'name="twitter:card" content="summary"' in html_source
+    assert 'name="twitter:title" content="Demo Launch Site"' in html_source
 
 
 def test_frontend_has_custom_svg_favicon_asset() -> None:
