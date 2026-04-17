@@ -34,4 +34,11 @@ jobs:
         run: npm run build
 
       - name: Run deploy smoke tests
-        run: python -m pytest -q tests/web/test_demo_launch_backend.py tests/web/test_demo_launch_frontend_integration.py tests/web/test_demo_launch_deploy.py tests/web/test_deploy_container_contract.py
+        run: python -m pytest -q tests/web/test_demo_launch_backend.py tests/web/test_demo_launch_frontend_integration.py tests/web/test_demo_launch_deploy.py tests/web/test_deploy_container_contract.py tests/web/test_live_smoke.py
+
+      - name: Run local live smoke check
+        run: |
+          python -m uvicorn web.backend.deploy_app:app --host 127.0.0.1 --port 8080 &
+          server_pid=$!
+          trap 'kill $server_pid' EXIT
+          python scripts/live_smoke_check.py http://127.0.0.1:8080
