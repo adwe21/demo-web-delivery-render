@@ -1,0 +1,49 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 630" role="img" aria-labelledby="title desc">
+  <title>Demo Launch Site</title>
+  <desc>Share image for Demo Launch Site with launch message and deployment highlights.</desc>
+  <defs>
+    <linearGradient id="bg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#0f172a" />
+      <stop offset="100%" stop-color="#111827" />
+    </linearGradient>
+    <linearGradient id="accent" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#f59e0b" />
+      <stop offset="100%" stop-color="#f97316" />
+    </linearGradient>
+  </defs>
+
+  <rect width="1200" height="630" fill="url(#bg)" />
+  <circle cx="1040" cy="120" r="180" fill="#f59e0b" opacity="0.10" />
+  <circle cx="980" cy="530" r="220" fill="#f97316" opacity="0.08" />
+  <rect x="72" y="72" width="1056" height="486" rx="30" fill="#111827" stroke="#334155" stroke-width="2" />
+
+  <g transform="translate(120 120)">
+    <rect x="0" y="0" width="182" height="44" rx="22" fill="#1f2937" stroke="#374151" />
+    <text x="24" y="29" fill="#f8fafc" font-family="Inter, Arial, sans-serif" font-size="18" letter-spacing="3">DEMO LAUNCH SITE</text>
+
+    <text x="0" y="120" fill="#f8fafc" font-family="Inter, Arial, sans-serif" font-size="74" font-weight="700">
+      Launch a credible product story
+    </text>
+    <text x="0" y="198" fill="#f8fafc" font-family="Inter, Arial, sans-serif" font-size="74" font-weight="700">
+      before the full platform ships.
+    </text>
+
+    <text x="0" y="280" fill="#cbd5e1" font-family="Inter, Arial, sans-serif" font-size="30">
+      Polished launch page, live contact intake, deploy-ready validation.
+    </text>
+
+    <rect x="0" y="330" width="420" height="84" rx="20" fill="#0b1220" stroke="#334155" />
+    <text x="32" y="380" fill="#f8fafc" font-family="Inter, Arial, sans-serif" font-size="34" font-weight="700">
+      GitHub main → Actions → Zeabur
+    </text>
+
+    <g transform="translate(0 450)">
+      <rect x="0" y="0" width="240" height="56" rx="28" fill="url(#accent)" />
+      <text x="30" y="36" fill="#111827" font-family="Inter, Arial, sans-serif" font-size="24" font-weight="700">LIVE DELIVERY CHAIN</text>
+
+      <text x="288" y="36" fill="#f8fafc" font-family="Inter, Arial, sans-serif" font-size="24">
+        demo-web-delivery.zeabur.app
+      </text>
+    </g>
+  </g>
+</svg>

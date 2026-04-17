@@ -8,6 +8,7 @@ APP_PATH = ROOT / "web" / "src" / "App.tsx"
 API_PATH = ROOT / "web" / "src" / "lib" / "api.ts"
 HTML_PATH = ROOT / "web" / "index.html"
 FAVICON_PATH = ROOT / "web" / "public" / "favicon.svg"
+OG_IMAGE_PATH = ROOT / "web" / "public" / "og-image.svg"
 
 
 def test_frontend_submit_handler_calls_backend_api() -> None:
@@ -40,9 +41,10 @@ def test_frontend_branding_uses_shared_site_name_and_page_metadata() -> None:
     assert 'property="og:title" content="Demo Launch Site"' in html_source
     assert 'property="og:type" content="website"' in html_source
     assert 'property="og:url" content="https://demo-web-delivery.zeabur.app/"' in html_source
-    assert 'property="og:image" content="https://demo-web-delivery.zeabur.app/favicon.svg"' in html_source
+    assert 'property="og:image" content="https://demo-web-delivery.zeabur.app/og-image.svg"' in html_source
     assert 'name="twitter:card" content="summary"' in html_source
     assert 'name="twitter:title" content="Demo Launch Site"' in html_source
+    assert 'name="twitter:image" content="https://demo-web-delivery.zeabur.app/og-image.svg"' in html_source
 
 
 def test_frontend_has_custom_svg_favicon_asset() -> None:
@@ -52,3 +54,14 @@ def test_frontend_has_custom_svg_favicon_asset() -> None:
 
     assert '<svg' in favicon_source
     assert 'Demo Launch Site' in favicon_source
+
+
+def test_frontend_has_dedicated_og_image_asset() -> None:
+    assert OG_IMAGE_PATH.exists(), "expected a checked-in dedicated OG image asset"
+
+    og_source = OG_IMAGE_PATH.read_text(encoding="utf-8")
+
+    assert '<svg' in og_source
+    assert 'viewBox="0 0 1200 630"' in og_source
+    assert 'Demo Launch Site' in og_source
+    assert 'Launch a credible product story' in og_source

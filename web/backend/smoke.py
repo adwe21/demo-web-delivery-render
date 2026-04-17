@@ -96,9 +96,10 @@ def _metadata_checks_from_html(html: str) -> dict[str, bool]:
         "theme_color_ok": has_meta("name", "theme-color", "#111827"),
         "og_title_ok": has_meta("property", "og:title", "Demo Launch Site"),
         "og_url_ok": has_meta("property", "og:url", "https://demo-web-delivery.zeabur.app/"),
-        "og_image_ok": has_meta("property", "og:image", "https://demo-web-delivery.zeabur.app/favicon.svg"),
+        "og_image_ok": has_meta("property", "og:image", "https://demo-web-delivery.zeabur.app/og-image.svg"),
         "twitter_card_ok": has_meta("name", "twitter:card", "summary"),
         "twitter_title_ok": has_meta("name", "twitter:title", "Demo Launch Site"),
+        "twitter_image_ok": has_meta("name", "twitter:image", "https://demo-web-delivery.zeabur.app/og-image.svg"),
     }
 
 
