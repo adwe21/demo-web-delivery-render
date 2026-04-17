@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-labelledby="title desc">
+  <title>Demo Launch Site</title>
+  <desc>Demo Launch Site favicon with DLS monogram.</desc>
+  <defs>
+    <linearGradient id="bg" x1="0%" x2="100%" y1="0%" y2="100%">
+      <stop offset="0%" stop-color="#111827" />
+      <stop offset="100%" stop-color="#1f2937" />
+    </linearGradient>
+    <linearGradient id="accent" x1="0%" x2="100%" y1="0%" y2="100%">
+      <stop offset="0%" stop-color="#f59e0b" />
+      <stop offset="100%" stop-color="#f97316" />
+    </linearGradient>
+  </defs>
+  <rect width="64" height="64" rx="14" fill="url(#bg)" />
+  <path d="M18 17h14c9 0 15 6 15 15s-6 15-15 15H18V17Zm11 23c5 0 8-3 8-8s-3-8-8-8h-2v16h2Z" fill="#f8fafc" />
+  <path d="M33 17h13v7H33zM33 29h11v7H33zM33 41h13v7H33z" fill="url(#accent)" />
+</svg>

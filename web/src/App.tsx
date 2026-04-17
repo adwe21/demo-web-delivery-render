@@ -16,6 +16,8 @@ import {
 
 type Audience = "product" | "ops" | "founders";
 
+const SITE_NAME = "Demo Launch Site";
+
 type FormState = {
   name: string;
   email: string;
@@ -137,7 +139,7 @@ export default function App() {
       <header className="sticky top-0 z-40 border-b border-border bg-background/85 backdrop-blur-xl">
         <div className="mx-auto flex max-w-6xl items-center justify-between px-6 py-4">
           <a href="#top" className="font-collapse text-xl uppercase tracking-[0.18em] text-foreground">
-            Demo Launch Site
+            {SITE_NAME}
           </a>
           <nav className="hidden items-center gap-6 font-display text-sm uppercase tracking-[0.16em] text-muted-foreground md:flex">
             <a href="#features" className="transition hover:text-foreground">
