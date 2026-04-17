@@ -31,60 +31,83 @@ const INSTALL_COMMAND =
 const AUDIENCE_COPY: Record<Audience, { label: string; title: string; body: string }> = {
   product: {
     label: "Product teams",
-    title: "Ship the story before the full product is ready",
+    title: "Align the launch story before roadmap depth catches up",
     body:
-      "Present the narrative, value props, and CTA flow in a polished single page that can be validated with real traffic.",
+      "Package the category narrative, proof stack, and conversion path into one surface that stakeholders can review and prospects can understand fast.",
   },
   ops: {
     label: "Ops & GTM",
-    title: "Coordinate launch messaging from one surface",
+    title: "Give every launch handoff one source of truth",
     body:
-      "Turn timelines, handoff notes, and launch milestones into one page your teams can review, share, and iterate on quickly.",
+      "Turn campaign timing, sales context, and launch readiness into one destination your team can circulate without losing the message.",
   },
   founders: {
     label: "Founders",
-    title: "Move from concept to launch-ready presence in days",
+    title: "Look launch-ready before the full product tour exists",
     body:
-      "Start with the core message, capture demand, and create a clear next action while engineering continues on the full product.",
+      "Lead with the sharpest proof, capture intent, and keep the next step clear while the deeper product roadmap continues shipping.",
   },
 };
 
 const FEATURE_BLOCKS = [
   {
     icon: Blocks,
-    eyebrow: "HeroSection",
+    eyebrow: "Narrative system",
     title: "Clear positioning at first glance",
     body:
       "A sharp hero, concise proof points, and immediate CTA hierarchy make the launch message understandable in seconds.",
   },
   {
     icon: Workflow,
-    eyebrow: "FeatureGrid",
+    eyebrow: "Proof modules",
     title: "Composable content blocks for rapid iteration",
     body:
       "Swap proof, feature, and rollout sections without rebuilding the whole page structure. Designed for fast messaging changes.",
   },
   {
     icon: Mail,
-    eyebrow: "ContactForm",
-    title: "Demand capture with a live interaction loop",
+    eyebrow: "Live conversion",
+    title: "Demand capture with a working interaction loop",
     body:
       "A working CTA form captures launch interest and gives immediate confirmation feedback, suitable for demos and stakeholder review.",
   },
 ] as const;
 
+const PROOF_POINTS = [
+  {
+    value: "<60s",
+    label: "Message clarity",
+    body: "A new viewer can understand the offer, proof, and next step inside the first scroll.",
+  },
+  {
+    value: "Live API intake",
+    label: "Conversion path",
+    body: "Launch interest is captured through the real backend flow, not a dead-end prototype button.",
+  },
+  {
+    value: "Smoke-guarded deploys",
+    label: "Release discipline",
+    body: "Homepage, health, submission, and metadata contracts are checked before the public deploy is trusted.",
+  },
+  {
+    value: "Share-ready metadata",
+    label: "Distribution surface",
+    body: "Large-image cards, alt text, and social previews are aligned before the link gets shared externally.",
+  },
+] as const;
+
 const DELIVERY_STEPS = [
   {
-    title: "Design handoff aligned",
-    body: "Direction: 清晰、结构化、低噪音。页面结构聚焦 Hero、Feature blocks、CTA form。",
+    title: "Narrative direction locked",
+    body: "The launch page is framed around a concise hero, modular proof blocks, and one clear conversion action.",
   },
   {
-    title: "Frontend implementation",
-    body: "Single-page React + Vite delivery with reusable blocks, responsive layout, copy interaction, and CTA form state.",
+    title: "Production-ready launch surface",
+    body: "A single-page React + Vite experience turns positioning, proof, and contact capture into something teams can review live.",
   },
   {
-    title: "Launch-ready validation",
-    body: "Production build passes locally so the page can move into downstream QA / deploy phases with low friction.",
+    title: "Proof-backed release gate",
+    body: "Build, smoke, metadata, and share-surface checks stay green before the page is treated as ready for traffic.",
   },
 ] as const;
 
@@ -167,19 +190,19 @@ export default function App() {
           <div className="relative z-10 space-y-8">
             <div className="inline-flex items-center gap-2 border border-border bg-card/70 px-3 py-2 text-xs uppercase tracking-[0.18em] text-muted-foreground">
               <Sparkles className="h-4 w-4 text-warning" />
-              frontend delivery · demo-web-delivery
+              trusted launch proof · demo launch site
             </div>
 
             <div className="space-y-5">
               <p className="font-display text-sm uppercase tracking-[0.2em] text-muted-foreground">
-                Hero · Feature blocks · CTA form
+                Launch narrative system · proof blocks · live conversion
               </p>
               <h1 className="max-w-3xl font-collapse text-5xl leading-none tracking-[0.05em] text-foreground sm:text-6xl md:text-7xl">
                 Launch a credible product story before the full platform ships.
               </h1>
               <p className="max-w-2xl text-lg leading-8 text-foreground/78 sm:text-xl">
-                This demo site packages positioning, proof, and conversion into one focused frontend surface.
-                It is built for stakeholder review, early demand capture, and downstream launch validation.
+                Demo Launch Site turns positioning, proof, and conversion into one production-ready launch surface.
+                It is built for stakeholder confidence, early demand capture, and public sharing without placeholder polish.
               </p>
             </div>
 
@@ -220,8 +243,8 @@ export default function App() {
           <div className="relative z-10 space-y-5 border border-border bg-card/75 p-5 shadow-[0_0_0_1px_rgba(255,230,203,0.02)]">
             <div className="flex items-center justify-between border-b border-border pb-4">
               <div>
-                <p className="font-display text-xs uppercase tracking-[0.18em] text-muted-foreground">Quick launch starter</p>
-                <h2 className="mt-2 font-collapse text-2xl uppercase tracking-[0.12em]">Install / handoff prompt</h2>
+                <p className="font-display text-xs uppercase tracking-[0.18em] text-muted-foreground">Launch proof pack</p>
+                <h2 className="mt-2 font-collapse text-2xl uppercase tracking-[0.12em]">Open the proof deck</h2>
               </div>
               <Rocket className="h-6 w-6 text-warning" />
             </div>
@@ -232,7 +255,7 @@ export default function App() {
                   <span className="h-2 w-2 rounded-full bg-destructive" />
                   <span className="h-2 w-2 rounded-full bg-warning" />
                   <span className="h-2 w-2 rounded-full bg-success" />
-                  terminal snippet
+                  launch brief
                 </div>
                 <code className="block overflow-x-auto whitespace-pre-wrap bg-transparent p-0">{INSTALL_COMMAND}</code>
               </div>
@@ -245,11 +268,11 @@ export default function App() {
                 className="inline-flex w-full items-center justify-center gap-2 border border-border bg-secondary px-4 py-3 font-display text-sm uppercase tracking-[0.16em] text-foreground transition hover:border-foreground/35"
               >
                 {copyState === "copied" ? <Check className="h-4 w-4 text-success" /> : <Clipboard className="h-4 w-4" />}
-                {copyState === "copied" ? "Copied" : "Copy command"}
+                {copyState === "copied" ? "Copied" : "Copy launch brief"}
               </button>
 
               <div className="border border-border bg-background/40 p-4">
-                <p className="font-display text-xs uppercase tracking-[0.18em] text-muted-foreground">Audience lens</p>
+                <p className="font-display text-xs uppercase tracking-[0.18em] text-muted-foreground">Audience messaging</p>
                 <div className="mt-3 grid gap-2 sm:grid-cols-3">
                   {(Object.keys(AUDIENCE_COPY) as Audience[]).map((key) => (
                     <button
@@ -275,14 +298,43 @@ export default function App() {
           </div>
         </section>
 
+        <section id="proof" className="mx-auto max-w-6xl px-6 py-6 md:py-12">
+          <div className="grid gap-8 border border-border bg-card/60 p-6 md:grid-cols-[0.85fr_1.15fr] md:p-8">
+            <div>
+              <p className="font-display text-sm uppercase tracking-[0.2em] text-muted-foreground">Trusted launch proof</p>
+              <h2 className="mt-3 font-collapse text-4xl uppercase tracking-[0.08em] sm:text-5xl">Evidence, not placeholder polish.</h2>
+              <p className="mt-4 max-w-xl leading-7 text-foreground/76">
+                Launch signals teams can trust before they publish, share, or spend traffic.
+              </p>
+              <a
+                href="#delivery"
+                className="mt-6 inline-flex items-center gap-2 border border-border bg-background/45 px-4 py-3 font-display text-sm uppercase tracking-[0.16em] text-foreground transition hover:border-foreground/35"
+              >
+                Review the proof
+                <ArrowRight className="h-4 w-4" />
+              </a>
+            </div>
+
+            <div className="grid gap-4 sm:grid-cols-2">
+              {PROOF_POINTS.map((item) => (
+                <article key={item.label} className="border border-border bg-background/45 p-5">
+                  <p className="font-collapse text-2xl uppercase tracking-[0.08em] text-foreground">{item.value}</p>
+                  <p className="mt-2 font-display text-xs uppercase tracking-[0.18em] text-muted-foreground">{item.label}</p>
+                  <p className="mt-3 leading-7 text-foreground/76">{item.body}</p>
+                </article>
+              ))}
+            </div>
+          </div>
+        </section>
+
         <section id="features" className="mx-auto max-w-6xl px-6 py-6 md:py-12">
           <div className="mb-8 flex flex-col gap-4 md:flex-row md:items-end md:justify-between">
             <div>
               <p className="font-display text-sm uppercase tracking-[0.2em] text-muted-foreground">Feature blocks</p>
-              <h2 className="mt-3 font-collapse text-4xl uppercase tracking-[0.1em] sm:text-5xl">Core frontend sections delivered</h2>
+              <h2 className="mt-3 font-collapse text-4xl uppercase tracking-[0.1em] sm:text-5xl">Core launch sections in one system</h2>
             </div>
             <p className="max-w-xl leading-7 text-foreground/74">
-              The implementation follows the approved design direction: clear structure, low noise, and a focused path from value proposition to CTA.
+              The page is structured to move from narrative to proof to conversion without asking the visitor to infer what matters.
             </p>
           </div>
 
@@ -304,9 +356,9 @@ export default function App() {
           <div className="grid gap-8 border border-border bg-card/60 p-6 md:grid-cols-[0.8fr_1.2fr] md:p-8">
             <div>
               <p className="font-display text-sm uppercase tracking-[0.2em] text-muted-foreground">Delivery path</p>
-              <h2 className="mt-3 font-collapse text-4xl uppercase tracking-[0.08em]">Built to clear frontend acceptance</h2>
+              <h2 className="mt-3 font-collapse text-4xl uppercase tracking-[0.08em]">Built to hold up in public</h2>
               <p className="mt-4 leading-7 text-foreground/76">
-                The page turns the design handoff into a runnable React implementation and keeps the scope tight around the current delivery lane.
+                The launch surface stays useful because the narrative, proof stack, and release gate are all wired to the same delivery path.
               </p>
             </div>
 
@@ -329,20 +381,20 @@ export default function App() {
         <section id="contact" className="mx-auto max-w-6xl px-6 py-8 pb-20 md:py-14 md:pb-24">
           <div className="grid gap-8 md:grid-cols-[0.85fr_1.15fr]">
             <div className="space-y-5">
-              <p className="font-display text-sm uppercase tracking-[0.2em] text-muted-foreground">CTA form</p>
-              <h2 className="font-collapse text-4xl uppercase tracking-[0.08em] sm:text-5xl">Capture launch interest with a working interaction</h2>
+              <p className="font-display text-sm uppercase tracking-[0.2em] text-muted-foreground">Launch intake</p>
+              <h2 className="font-collapse text-4xl uppercase tracking-[0.08em] sm:text-5xl">Capture serious launch interest with a live handoff</h2>
               <p className="leading-7 text-foreground/76">
-                Submit the form to simulate a launch intake flow. The interaction confirms the handoff works and demonstrates the CTA state transition for review.
+                Submit the form to show the launch surface can move from attention to qualified intent without breaking the story.
               </p>
               <div className="border border-border bg-card/70 p-5 text-sm leading-7 text-foreground/76">
                 <div className="mb-3 flex items-center gap-2 font-display uppercase tracking-[0.16em] text-muted-foreground">
                   <Users className="h-4 w-4" />
-                  Demo-ready outcomes
+                  What this proves
                 </div>
                 <ul className="space-y-2">
-                  <li>• Collect contact and use-case context in one place.</li>
-                  <li>• Submit the launch intake to the backend API and return immediate confirmation.</li>
-                  <li>• Keep the CTA flow aligned with downstream QA and deploy validation.</li>
+                  <li>• Collect contact and use-case context in one reviewable launch flow.</li>
+                  <li>• Route launch interest through the backend API and return immediate confirmation.</li>
+                  <li>• Keep the conversion surface aligned with smoke, deploy, and sharing checks.</li>
                 </ul>
               </div>
             </div>

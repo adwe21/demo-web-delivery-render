@@ -64,6 +64,23 @@ def test_frontend_branding_uses_shared_site_name_and_page_metadata() -> None:
     assert 'Demo Launch Site social preview card showing proof-ready launch narrative and delivery chain.' in html_source
 
 
+def test_frontend_includes_proof_section_and_productized_copy() -> None:
+    app_source = APP_PATH.read_text(encoding="utf-8")
+
+    assert 'const PROOF_POINTS = [' in app_source
+    assert 'Trusted launch proof' in app_source
+    assert 'Launch signals teams can trust before they publish, share, or spend traffic.' in app_source
+    assert 'Live API intake' in app_source
+    assert 'Smoke-guarded deploys' in app_source
+    assert 'Share-ready metadata' in app_source
+    assert 'Evidence, not placeholder polish.' in app_source
+    assert 'Launch narrative system' in app_source
+    assert 'Review the proof' in app_source
+    assert 'Production-ready launch surface' in app_source
+    assert 'Open the proof deck' in app_source
+    assert 'Audience messaging' in app_source
+
+
 def test_frontend_has_custom_svg_favicon_asset() -> None:
     assert FAVICON_PATH.exists(), "expected a checked-in custom favicon asset for the launch site"
 
