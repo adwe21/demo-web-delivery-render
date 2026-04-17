@@ -19,6 +19,8 @@ Public deploy target for the Demo Launch Site.
     - `theme-color`
     - `og:*`
     - `twitter:*`
+    - `og:image:alt`
+    - `twitter:image:alt`
 - Failure signals are classified as:
   - `frontend_unavailable`
   - `metadata_invalid`

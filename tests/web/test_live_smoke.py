@@ -23,9 +23,11 @@ VALID_HTML = """
     <meta property="og:title" content="Demo Launch Site" />
     <meta property="og:url" content="https://demo-web-delivery.zeabur.app/" />
     <meta property="og:image" content="https://demo-web-delivery.zeabur.app/og-image.png" />
-    <meta name="twitter:card" content="summary" />
+    <meta property="og:image:alt" content="Demo Launch Site social preview card showing proof-ready launch narrative and delivery chain." />
+    <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:title" content="Demo Launch Site" />
     <meta name="twitter:image" content="https://demo-web-delivery.zeabur.app/og-image.png" />
+    <meta name="twitter:image:alt" content="Demo Launch Site social preview card showing proof-ready launch narrative and delivery chain." />
   </head>
   <body></body>
 </html>
@@ -58,9 +60,11 @@ def test_live_smoke_check_covers_root_health_and_contact_submission() -> None:
         "og_title_ok": True,
         "og_url_ok": True,
         "og_image_ok": True,
+        "og_image_alt_ok": True,
         "twitter_card_ok": True,
         "twitter_title_ok": True,
         "twitter_image_ok": True,
+        "twitter_image_alt_ok": True,
     }
 
 
@@ -126,10 +130,12 @@ def test_live_smoke_accepts_semantically_valid_metadata_with_different_attribute
                 <meta content="https://demo-web-delivery.zeabur.app/" property="og:url" />
                 <meta content="Demo Launch Site" property="og:title" />
                 <link href="https://demo-web-delivery.zeabur.app/" rel="canonical" />
-                <meta content="summary" name="twitter:card" />
+                <meta content="summary_large_image" name="twitter:card" />
                 <meta content="https://demo-web-delivery.zeabur.app/og-image.png" property="og:image" />
+                <meta content="Demo Launch Site social preview card showing proof-ready launch narrative and delivery chain." property="og:image:alt" />
                 <meta content="Demo Launch Site" name="twitter:title" />
                 <meta content="https://demo-web-delivery.zeabur.app/og-image.png" name="twitter:image" />
+                <meta content="Demo Launch Site social preview card showing proof-ready launch narrative and delivery chain." name="twitter:image:alt" />
                 <title>Demo Launch Site</title>
               </head>
               <body></body>

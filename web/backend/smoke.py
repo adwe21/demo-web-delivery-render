@@ -97,9 +97,19 @@ def _metadata_checks_from_html(html: str) -> dict[str, bool]:
         "og_title_ok": has_meta("property", "og:title", "Demo Launch Site"),
         "og_url_ok": has_meta("property", "og:url", "https://demo-web-delivery.zeabur.app/"),
         "og_image_ok": has_meta("property", "og:image", "https://demo-web-delivery.zeabur.app/og-image.png"),
-        "twitter_card_ok": has_meta("name", "twitter:card", "summary"),
+        "og_image_alt_ok": has_meta(
+            "property",
+            "og:image:alt",
+            "Demo Launch Site social preview card showing proof-ready launch narrative and delivery chain.",
+        ),
+        "twitter_card_ok": has_meta("name", "twitter:card", "summary_large_image"),
         "twitter_title_ok": has_meta("name", "twitter:title", "Demo Launch Site"),
         "twitter_image_ok": has_meta("name", "twitter:image", "https://demo-web-delivery.zeabur.app/og-image.png"),
+        "twitter_image_alt_ok": has_meta(
+            "name",
+            "twitter:image:alt",
+            "Demo Launch Site social preview card showing proof-ready launch narrative and delivery chain.",
+        ),
     }
 
 

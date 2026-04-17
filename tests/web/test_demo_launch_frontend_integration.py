@@ -55,9 +55,13 @@ def test_frontend_branding_uses_shared_site_name_and_page_metadata() -> None:
     assert 'property="og:type" content="website"' in html_source
     assert 'property="og:url" content="https://demo-web-delivery.zeabur.app/"' in html_source
     assert 'property="og:image" content="https://demo-web-delivery.zeabur.app/og-image.png"' in html_source
-    assert 'name="twitter:card" content="summary"' in html_source
+    assert 'property="og:image:alt"' in html_source
+    assert 'Demo Launch Site social preview card showing proof-ready launch narrative and delivery chain.' in html_source
+    assert 'name="twitter:card" content="summary_large_image"' in html_source
     assert 'name="twitter:title" content="Demo Launch Site"' in html_source
     assert 'name="twitter:image" content="https://demo-web-delivery.zeabur.app/og-image.png"' in html_source
+    assert 'name="twitter:image:alt"' in html_source
+    assert 'Demo Launch Site social preview card showing proof-ready launch narrative and delivery chain.' in html_source
 
 
 def test_frontend_has_custom_svg_favicon_asset() -> None:
