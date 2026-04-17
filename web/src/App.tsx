@@ -25,8 +25,8 @@ type FormState = {
   useCase: string;
 };
 
-const INSTALL_COMMAND =
-  "curl -fsSL https://example.com/demo-launch-site/install.sh | bash";
+const PUBLIC_SITE_URL = "https://demo-web-delivery.zeabur.app/";
+const LIVE_SMOKE_DOCS_URL = "https://github.com/adwe21/demo-web-delivery-render#smoke-checks";
 
 const AUDIENCE_COPY: Record<Audience, { label: string; title: string; body: string }> = {
   product: {
@@ -135,7 +135,7 @@ export default function App() {
   const activeAudience = useMemo(() => AUDIENCE_COPY[audience], [audience]);
 
   const handleCopy = async () => {
-    await navigator.clipboard.writeText(INSTALL_COMMAND);
+    await navigator.clipboard.writeText(PUBLIC_SITE_URL);
     setCopyState("copied");
     window.setTimeout(() => setCopyState("idle"), 1800);
   };
@@ -280,9 +280,9 @@ export default function App() {
                   <span className="h-2 w-2 rounded-full bg-destructive" />
                   <span className="h-2 w-2 rounded-full bg-warning" />
                   <span className="h-2 w-2 rounded-full bg-success" />
-                  launch brief
+                  public launch url
                 </div>
-                <code className="block overflow-x-auto whitespace-pre-wrap bg-transparent p-0">{INSTALL_COMMAND}</code>
+                <code className="block overflow-x-auto whitespace-pre-wrap bg-transparent p-0">{PUBLIC_SITE_URL}</code>
               </div>
 
               <div className="grid gap-3 sm:grid-cols-2">
@@ -297,7 +297,9 @@ export default function App() {
                   {copyState === "copied" ? "Copied" : "COPY PUBLIC URL"}
                 </button>
                 <a
-                  href="#contact"
+                  href={LIVE_SMOKE_DOCS_URL}
+                  target="_blank"
+                  rel="noreferrer"
                   className="inline-flex w-full items-center justify-center gap-2 border border-foreground bg-foreground px-4 py-3 font-display text-sm uppercase tracking-[0.16em] text-background transition hover:opacity-90"
                 >
                   RUN LIVE SMOKE

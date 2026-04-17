@@ -69,6 +69,7 @@ def test_frontend_includes_proof_section_and_productized_copy() -> None:
 
     assert 'const PROOF_POINTS = [' in app_source
     assert 'const STATUS_BADGES = [' in app_source
+    assert 'const PUBLIC_SITE_URL = "https://demo-web-delivery.zeabur.app/"' in app_source
     assert 'Trusted launch proof' in app_source
     assert 'Launch signals teams can trust before they publish, share, or spend traffic.' in app_source
     assert 'Live API intake' in app_source
@@ -85,6 +86,10 @@ def test_frontend_includes_proof_section_and_productized_copy() -> None:
     assert 'Share surface' in app_source
     assert 'Public URL' in app_source
     assert 'All systems ready for launch review' in app_source
+    assert 'navigator.clipboard.writeText(PUBLIC_SITE_URL)' in app_source
+    assert '<code className="block overflow-x-auto whitespace-pre-wrap bg-transparent p-0">{PUBLIC_SITE_URL}</code>' in app_source
+    assert 'const LIVE_SMOKE_DOCS_URL = "https://github.com/adwe21/demo-web-delivery-render#smoke-checks"' in app_source
+    assert 'href={LIVE_SMOKE_DOCS_URL}' in app_source
     assert 'RUN LIVE SMOKE' in app_source
     assert 'COPY PUBLIC URL' in app_source
 
